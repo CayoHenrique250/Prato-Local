@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prato Local · Comer bem em Arapiraca gastando pouco</title>
+    <meta
+      name="description"
+      content="Onde comprar, o que está na época, receitas que aproveitam tudo e lista de compras com orçamento. Projeto de extensão de Arapiraca, AL."
+    />
+    <meta name="theme-color" content="#f1e6cf" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Figtree:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      try {
+        var t = localStorage.getItem("pl:theme");
+        if (!t)
+          t = matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a
+          class="brand"
+          href="#inicio"
+          aria-label="Prato Local, página inicial"
+        >
+          <span class="brand-mark" aria-hidden="true"
+            ><i data-icon="leaf"></i
+          ></span>
+          <span class="brand-text"
+            ><strong>Prato Local</strong><small>Arapiraca · AL</small></span
+          >
+        </a>
+
+        <nav class="desk-nav" aria-label="Principal">
+          <a href="#inicio" data-route="inicio">Início</a>
+          <a href="#feiras" data-route="feiras">Onde comprar</a>
+          <a href="#receitas" data-route="receitas">Receitas</a>
+          <a href="#lista" data-route="lista">Lista de compras</a>
+          <a href="#saude" data-route="saude">Saúde</a>
+        </nav>
+
+        <div class="topbar-actions">
+          <button
+            id="theme-toggle"
+            class="icon-btn"
+            aria-label="Alternar entre tema claro e escuro"
+          >
+            <i data-icon="moon"></i>
+          </button>
+          <button
+            id="share-btn"
+            class="icon-btn"
+            aria-label="Compartilhar o site"
+          >
+            <i data-icon="share"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="conteudo" tabindex="-1">
+      <section id="inicio" class="view" aria-labelledby="h-inicio">
+        <div class="wrap">
+          <div class="hero">
+            <div class="hero-copy">
+              <h1 id="h-inicio">Comer bem em Arapiraca gastando pouco</h1>
+              <p class="hero-lead">
+                Veja onde comprar hoje, o que está na época, receitas que
+                aproveitam tudo e monte sua lista de compras com orçamento.
+              </p>
+              <div class="hero-cta">
+                <a class="btn btn-sun" href="#feiras"
+                  ><i data-icon="pin"></i> Onde comprar hoje</a
+                >
+                <a class="btn btn-line-light" href="#lista"
+                  ><i data-icon="bag"></i> Montar minha lista</a
+                >
+              </div>
+            </div>
+            <aside class="today-card" aria-live="polite">
+              <p class="label" id="today-label">Hoje</p>
+              <h2 id="today-title">Carregando…</h2>
+              <ul id="today-list" class="plain-list"></ul>
+              <a class="link-arrow" href="#feiras"
+                >Ver todos os locais <i data-icon="arrow"></i
+              ></a>
+            </aside>
+          </div>
+
+          <section class="block" aria-labelledby="h-fazer">
+            <h2 id="h-fazer">O que você quer fazer?</h2>
+            <div class="tasks">
+              <a class="task" href="#feiras">
+                <i data-icon="pin"></i>
+                <span
+                  ><strong>Achar onde comprar</strong>Feira, mercado e sacolão,
+                  com dia, horário e rota.</span
+                >
+                <i data-icon="arrow" class="go"></i>
+              </a>
+              <a class="task" href="#receitas">
+                <i data-icon="book"></i>
+                <span
+                  ><strong>Escolher uma receita</strong>Passo a passo barato, e
+                  os ingredientes vão direto para a lista.</span
+                >
+                <i data-icon="arrow" class="go"></i>
+              </a>
+              <a class="task" href="#lista">
+                <i data-icon="bag"></i>
+                <span
+                  ><strong>Montar a lista de compras</strong>Anote o que precisa
+                  e veja se o valor cabe no seu dinheiro.</span
+                >
+                <i data-icon="arrow" class="go"></i>
+              </a>
+              <a class="task" href="#saude">
+                <i data-icon="heart"></i>
+                <span
+                  ><strong>Entender melhor a alimentação</strong>Como montar o
+                  prato, mitos e verdades, e quando ir ao posto.</span
+                >
+                <i data-icon="arrow" class="go"></i>
+              </a>
+            </div>
+          </section>
+
+          <section class="block" aria-labelledby="h-passos">
+            <h2 id="h-passos">Como usar, em 3 passos</h2>
+            <ol class="steps-row">
+              <li>
+                <b>1</b>
+                <p>
+                  <strong>Planeje.</strong> Veja em “Onde comprar” qual feira
+                  abre hoje e confira o que está na época logo abaixo.
+                </p>
+              </li>
+              <li>
+                <b>2</b>
+                <p>
+                  <strong>Escolha o que cozinhar.</strong> Abra uma receita e
+                  toque em “Adicionar à minha lista” para levar os ingredientes.
+                </p>
+              </li>
+              <li>
+                <b>3</b>
+                <p>
+                  <strong>Compre e acompanhe.</strong> Na feira, digite o preço,
+                  marque o que já pegou e veja quanto ainda cabe no orçamento.
+                </p>
+              </li>
+            </ol>
+          </section>
+
+          <section class="block" aria-labelledby="h-safra">
+            <h2 id="h-safra">O que está na época</h2>
+            <p class="section-help">
+              A barra colorida mostra os meses em que o alimento costuma estar
+              mais barato e mais fresco. O mês atual está destacado. É uma
+              referência para o Nordeste: pode mudar de um ano para outro,
+              conforme a chuva.
+            </p>
+            <div id="safra-now" class="chips-row"></div>
+            <div
+              class="table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Tabela de safra, role para os lados no celular"
+            >
+              <table class="safra" id="safra-table">
+                <caption class="sr-only">
+                  Meses de safra de cada alimento
+                </caption>
+              </table>
+            </div>
+            <p class="small" style="margin-top: 8px">
+              No celular, arraste a tabela para o lado para ver todos os meses.
+            </p>
+          </section>
+
+          <section class="block" aria-labelledby="h-dicas">
+            <h2 id="h-dicas">Como gastar menos na feira</h2>
+            <dl class="tips" id="tips"></dl>
+          </section>
+
+          <section class="block xepa" aria-labelledby="h-xepa">
+            <div>
+              <h2 id="h-xepa">O que é a xepa?</h2>
+              <p class="section-help">
+                Xepa é o que sobra no fim da feira e é vendido mais barato,
+                porque o feirante prefere vender a perder. Frutas bem maduras e
+                folhas um pouco murchas costumam sair assim.
+              </p>
+            </div>
+            <ul class="check-list">
+              <li>
+                Vá nas últimas horas da feira, quando as bancas começam a
+                reduzir o preço.
+              </li>
+              <li>
+                Pergunte o preço do lote inteiro. Comprar o caixote costuma sair
+                mais barato que por quilo.
+              </li>
+              <li>
+                Use no mesmo dia ou no dia seguinte: sopa, suco, refogado, doce
+                ou congele.
+              </li>
+              <li>
+                Não compre o que está com mofo, cheiro ruim ou muito mole. Xepa
+                é fruta madura, não estragada.
+              </li>
+            </ul>
+          </section>
+        </div>
+      </section>
+
+      <section id="feiras" class="view" aria-labelledby="h-feiras" hidden>
+        <div class="wrap">
+          <header class="page-head">
+            <h2 id="h-feiras">Onde comprar</h2>
+            <p class="lead">
+              Feiras, mercado e sacolões de Arapiraca. Toque em “Ver no mapa”
+              para localizar e em “Traçar rota” para abrir o caminho no celular.
+            </p>
+          </header>
+
+          <div class="toolbar">
+            <div
+              class="chips"
+              id="place-filters"
+              role="group"
+              aria-label="Filtrar por tipo de local"
+            ></div>
+            <label class="check"
+              ><input type="checkbox" id="only-today" /> Mostrar só os que abrem
+              hoje</label
+            >
+          </div>
+
+          <div class="split">
+            <div class="map-box">
+              <div
+                id="map"
+                role="region"
+                aria-label="Mapa dos locais de compra"
+              ></div>
+              <button
+                id="locate-me"
+                class="map-btn"
+                aria-label="Mostrar onde eu estou no mapa"
+                title="Onde eu estou"
+              >
+                <i data-icon="locate"></i>
+              </button>
+            </div>
+            <div>
+              <div id="places-list" class="places"></div>
+              <p class="small place-note">
+                Dias e horários mudam, principalmente em feriados. Confirme
+                antes de sair de casa. Os pinos mostram a região; use “Traçar
+                rota” para chegar ao endereço certo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="receitas" class="view" aria-labelledby="h-receitas" hidden>
+        <div class="wrap">
+          <header class="page-head">
+            <h2 id="h-receitas">Receitas baratas</h2>
+            <p class="lead">
+              Cascas, talos e sobras bem lavados viram refeição. Toque em “Ver
+              receita” para abrir os ingredientes e o modo de preparo. O coração
+              guarda as suas favoritas.
+            </p>
+          </header>
+
+          <div class="toolbar">
+            <label class="search">
+              <i data-icon="search"></i>
+              <span class="sr-only">Buscar receita ou ingrediente</span>
+              <input
+                type="search"
+                id="recipe-search"
+                placeholder="Buscar: arroz, banana, macaxeira…"
+                autocomplete="off"
+              />
+            </label>
+            <label class="check"
+              ><input type="checkbox" id="only-favs" /> Só as favoritas</label
+            >
+          </div>
+          <div
+            class="chips"
+            id="recipe-filters"
+            role="group"
+            aria-label="Filtrar receitas por categoria"
+          ></div>
+          <p class="count" id="recipe-count" aria-live="polite"></p>
+          <div id="recipes" class="recipes"></div>
+        </div>
+      </section>
+
+      <section id="lista" class="view" aria-labelledby="h-lista" hidden>
+        <div class="wrap">
+          <header class="page-head">
+            <h2 id="h-lista">Lista de compras</h2>
+            <p class="lead">
+              Escreva o que precisa comprar, o quanto e o preço que encontrou. O
+              site soma tudo e compara com o dinheiro que você tem. A lista fica
+              guardada neste aparelho.
+            </p>
+          </header>
+
+          <ol class="steps-row steps-mini">
+            <li>
+              <b>1</b>
+              <p>Digite o item, a quantidade e o preço de uma unidade.</p>
+            </li>
+            <li>
+              <b>2</b>
+              <p>Toque no quadradinho quando colocar no carrinho.</p>
+            </li>
+            <li>
+              <b>3</b>
+              <p>Preencha o orçamento ao lado para acompanhar o gasto.</p>
+            </li>
+          </ol>
+
+          <div class="split split-lista">
+            <div>
+              <form id="item-form" class="item-form" autocomplete="off">
+                <label class="f-name"
+                  >Item
+                  <input
+                    id="item-name"
+                    required
+                    maxlength="60"
+                    placeholder="Ex.: macaxeira"
+                  />
+                </label>
+                <label
+                  >Quantidade
+                  <input
+                    id="item-qty"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="1"
+                    inputmode="numeric"
+                  />
+                </label>
+                <label
+                  >Preço de 1 unidade (R$)
+                  <input
+                    id="item-price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="0,00"
+                    inputmode="decimal"
+                  />
+                </label>
+                <button class="btn btn-primary" type="submit">
+                  <i data-icon="plus"></i> Adicionar
+                </button>
+              </form>
+              <ul id="shopping" class="shopping"></ul>
+              <div class="list-actions">
+                <button class="btn btn-ghost" id="clear-done" type="button">
+                  Remover os marcados
+                </button>
+                <button class="btn btn-ghost" id="copy-list" type="button">
+                  Copiar lista
+                </button>
+                <a
+                  class="btn btn-ghost"
+                  id="wa-list"
+                  target="_blank"
+                  rel="noopener"
+                  >Enviar por WhatsApp</a
+                >
+                <button class="btn btn-danger" id="clear-all" type="button">
+                  Apagar tudo
+                </button>
+              </div>
+            </div>
+
+            <aside class="budget" aria-label="Orçamento">
+              <h3>Quanto posso gastar?</h3>
+              <label
+                >Meu orçamento (R$)
+                <input
+                  id="budget"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="Ex.: 120"
+                  inputmode="decimal"
+                />
+              </label>
+              <div
+                class="meter"
+                role="progressbar"
+                aria-label="Orçamento usado"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                id="meter"
+              >
+                <span id="meter-fill"></span>
+              </div>
+              <dl class="totals">
+                <div>
+                  <dt>Total da lista</dt>
+                  <dd id="t-total">R$ 0,00</dd>
+                </div>
+                <div>
+                  <dt>Já no carrinho</dt>
+                  <dd id="t-done">R$ 0,00</dd>
+                </div>
+                <div>
+                  <dt>Sobra do orçamento</dt>
+                  <dd id="t-left">—</dd>
+                </div>
+                <div>
+                  <dt>Itens marcados</dt>
+                  <dd id="t-count">0</dd>
+                </div>
+              </dl>
+              <p class="note" id="budget-msg"></p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="saude" class="view" aria-labelledby="h-saude" hidden>
+        <div class="wrap">
+          <header class="page-head">
+            <h2 id="h-saude">Alimentação e saúde</h2>
+            <p class="lead">
+              Orientações gerais, baseadas no Guia Alimentar para a População
+              Brasileira (Ministério da Saúde) e na Organização Mundial da
+              Saúde. Não substituem consulta com médico ou nutricionista.
+            </p>
+          </header>
+
+          <section class="block" aria-labelledby="h-prato">
+            <h3 id="h-prato" class="h2">Como montar o prato</h3>
+            <p class="section-help">
+              Uma ideia simples para o almoço: metade do prato de verduras,
+              legumes e frutas, e a outra metade dividida entre uma fonte de
+              energia e uma de proteína.
+            </p>
+            <div
+              class="plate-bar"
+              role="img"
+              aria-label="Prato: metade verduras e legumes, um quarto arroz ou macaxeira, um quarto feijão, ovo ou carne"
+            >
+              <span style="--w: 50" class="p1">Verduras, legumes e frutas</span>
+              <span style="--w: 25" class="p2">Arroz, macaxeira, cuscuz</span>
+              <span style="--w: 25" class="p3">Feijão, ovo, carne</span>
+            </div>
+            <p class="small">
+              Quem tem diabetes, doença nos rins ou outra condição deve ajustar
+              com a equipe de saúde. A bebida do dia a dia é água.
+            </p>
+          </section>
+
+          <section class="block" aria-labelledby="h-temas">
+            <h3 id="h-temas" class="h2">O que vale saber</h3>
+            <p class="section-help">Toque em um tema para abrir.</p>
+            <div id="health" class="accordion"></div>
+          </section>
+
+          <section class="block" aria-labelledby="h-mito">
+            <h3 id="h-mito" class="h2">Mito ou verdade?</h3>
+            <p class="section-help">
+              Coisas que a gente ouve por aí sobre comida, e o que a ciência
+              diz.
+            </p>
+            <ul id="myths" class="myths"></ul>
+          </section>
+
+          <section class="callout" aria-labelledby="h-ubs">
+            <h3 id="h-ubs">Procure a UBS (posto de saúde) do seu bairro</h3>
+            <p>
+              Pressão alta, diabetes, perda ou ganho de peso sem explicação,
+              criança com pouco apetite e gestantes devem ser acompanhadas pela
+              equipe de saúde da família, de graça pelo SUS. Em caso de
+              emergência, ligue <strong>192 (SAMU)</strong>.
+            </p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer-grid">
+        <div>
+          <h2 class="footer-title">Sobre o projeto</h2>
+          <p class="footer-main">
+            <strong>Projeto de extensão</strong> realizado por
+            <strong>Cayo Henrique da Silva Freitas</strong>, aluno de Análise e
+            Desenvolvimento de Sistemas.
+          </p>
+        </div>
+        <div>
+          <p class="small">
+            Dias, horários e preços mudam. Confirme antes de sair de casa. O
+            conteúdo de saúde é informativo e não substitui orientação
+            profissional.
+          </p>
+          <p class="small">Mapa © colaboradores do OpenStreetMap.</p>
+        </div>
+      </div>
+    </footer>
+
+    <nav class="tabbar" aria-label="Principal (celular)">
+      <a href="#inicio" data-route="inicio"
+        ><i data-icon="home"></i><span>Início</span></a
+      >
+      <a href="#feiras" data-route="feiras"
+        ><i data-icon="pin"></i><span>Comprar</span></a
+      >
+      <a href="#receitas" data-route="receitas"
+        ><i data-icon="book"></i><span>Receitas</span></a
+      >
+      <a href="#lista" data-route="lista"
+        ><i data-icon="bag"></i><span>Lista</span></a
+      >
+      <a href="#saude" data-route="saude"
+        ><i data-icon="heart"></i><span>Saúde</span></a
+      >
+    </nav>
+
+    <dialog id="recipe-dialog" aria-labelledby="dlg-title">
+      <article id="dlg-body"></article>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
